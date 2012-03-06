@@ -2,10 +2,12 @@ package jghoman;
 
 import com.twitter.finagle.Service;
 import com.twitter.finagle.builder.ClientBuilder;
+import com.twitter.finagle.thrift.ClientId;
 import com.twitter.finagle.thrift.ThriftClientFramedCodecFactory;
 import com.twitter.finagle.thrift.ThriftClientRequest;
 import com.twitter.util.FutureEventListener;
 import org.apache.thrift.protocol.TBinaryProtocol;
+import scala.Option;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ public class Client {
     public static void main(String[] args) {
         Service<ThriftClientRequest, byte[]> client = ClientBuilder.safeBuild(ClientBuilder.get()
                 .hosts(new InetSocketAddress(8080))
-                .codec(new ThriftClientFramedCodecFactory())
+                .codec(new ThriftClientFramedCodecFactory(Option.apply(new ClientId("client"))))
                 .hostConnectionLimit(100)); // IMPORTANT: this determines how many rpc's are sent in at once.
                                            // If set to 1, you get no parallelism on for this client.
 

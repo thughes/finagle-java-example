@@ -1,0 +1,51 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+sourceCompatibility = 1.6
+version = '0.1.0'
+
+eclipse {
+    classpath {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}
+
+idea {
+    project {
+        jdkName = '1.6'
+        languageLevel = '1.6'
+    }
+    
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenRepo urls: "http://maven.twttr.com/"
+    mavenRepo urls: "http://repo.codahale.com/"
+}
+
+configurations {
+    compile {
+        exclude group: 'javax.jms', module: 'jms'
+        exclude group: 'com.sun.jdmk', module: 'jmxtools'
+        exclude group: 'com.sun.jmx', module: 'jmxri'
+    }
+}
+
+dependencies {
+    compile 'com.twitter:finagle_2.9.1:2.0.1'
+    compile 'com.codahale:jerkson_2.8.1:0.1.4'
+    testCompile 'junit:junit:3.8.1'
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'EventLog', 'Implementation-Version': version
+    }
+}
